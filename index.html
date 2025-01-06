@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AMT - Sphere Ad Concept</title>
+  <style>
+    /* Basic reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      /* Make body content centered vertically + horizontally */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1000px; 
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Company Logo */
+    .logo {
+      margin-bottom: 50px;
+    }
+    .logo img {
+      width: 200px 
+    }
+
+    /* Introduction Text */
+    .intro {
+      margin-bottom: 20px;
+    }
+    .intro p {
+      font-size: 1.1em;
+      line-height: 1.4;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    /* Slideshow Container */
+    .slideshow {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Main Image */
+    .slideshow img {
+      max-width: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      margin-top: 10px;
+    }
+    .nav-buttons button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    .nav-buttons button:hover {
+      background-color: #555;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+    }
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    /* Close Button */
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 35px;
+      font-weight: bold;
+      color: #fff;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Company Logo -->
+  <div class="logo">
+    <img src="images/logo.png" alt="Company Logo" />
+  </div>
+
+  <!-- Container -->
+  <div class="container">
+    <!-- Intro Text -->
+    <div class="intro">
+      <p>
+        These images represent the closest visualization of the vision we have at African Media Technologies (AMT).
+        Due to financial limitations, we couldn't create a physical demo or model at this time. However, we hope these
+        visuals will help bring our concept to life.
+      </p>
+    </div>
+
+    <!-- Slideshow Section -->
+    <div class="slideshow">
+      <!-- The main image that changes -->
+      <img
+        id="mainImage"
+        src="images/pic1.png"
+        alt="Sphere Concept"
+        onclick="openModal()"
+      />
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+      <button onclick="prevImage()">Prev</button>
+      <button onclick="nextImage()">Next</button>
+    </div>
+  </div>
+
+  <!-- Modal for large view -->
+  <div id="imageModal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+      <button class="close" onclick="closeModal(event)">&times;</button>
+      <img id="modalImage" src="" alt="Expanded Sphere" />
+    </div>
+  </div>
+
+  <script>
+    // 1) List of images
+    const imagePaths = [
+      'images/pic1.png',
+      'images/pic2.png',
+      'images/pic3.png',
+      'images/pic4.png',
+      'images/pic5.png',
+      'images/pic6.png',
+      'images/pic7.png',
+      'images/pic8.png',
+      'images/pic9.png',
+      'images/pic10.png',
+      'images/pic11.png',
+      'images/pic12.png',
+      'images/pic13.png',
+      'images/pic14.png',
+      'images/pic15.png',
+      'images/pic16.png',
+      'images/pic17.png',
+      'images/pic18.png',
+      'images/pic19.png',
+      'images/pic20.png'
+    ];
+
+    // 2) Current Index
+    let currentIndex = 0; // start at pic1.png
+
+    // 3) DOM References
+    const mainImage = document.getElementById('mainImage');
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+
+    // 4) Display the current image
+    function showCurrentImage() {
+      mainImage.src = imagePaths[currentIndex];
+    }
+
+    // 5) Next & Prev Functions
+    function nextImage() {
+      currentIndex++;
+      if (currentIndex >= imagePaths.length) {
+        currentIndex = 0; // loop back to start
+      }
+      showCurrentImage();
+    }
+
+    function prevImage() {
+      currentIndex--;
+      if (currentIndex < 0) {
+        currentIndex = imagePaths.length - 1; // jump to last
+      }
+      showCurrentImage();
+    }
+
+    // 6) Auto-play every 10 seconds
+    setInterval(() => {
+      nextImage();
+    }, 10000); // 10 seconds
+
+    // 7) Modal Functions
+    function openModal() {
+      modal.style.display = 'flex';
+      modalImage.src = imagePaths[currentIndex];
+    }
+
+    function closeModal(event) {
+      // if user clicks outside the image or on the close button
+      if (event.target === modal || event.target.className === 'close') {
+        modal.style.display = 'none';
+      }
+    }
+
+    // Initialize the first image
+    showCurrentImage();
+  </script>
+</body>
+</html>

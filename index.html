@@ -200,34 +200,56 @@
     const modal = document.getElementById('imageModal');
     const modalImage = document.getElementById('modalImage');
 
-    // 4) Display the current image
+    // 4) Preload all images
+    const preloadedImages = [];
+    imagePaths.forEach(path => {
+      const img = new Image();
+      img.src = path;
+      preloadedImages.push(img);
+    });
+
+    // 5) Display the current image
     function showCurrentImage() {
       mainImage.src = imagePaths[currentIndex];
     }
 
-    // 5) Next & Prev Functions
+    // 6) Stop and restart auto-play timer
+    let autoPlayInterval;
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(() => {
+        nextImage();
+      }, 10000); // 10 seconds
+    }
+
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    // 7) Next & Prev Functions
     function nextImage() {
+      stopAutoPlay(); // Stop auto-play on button press
       currentIndex++;
       if (currentIndex >= imagePaths.length) {
         currentIndex = 0; // loop back to start
       }
       showCurrentImage();
+      startAutoPlay(); // Restart auto-play after the image changes
     }
 
     function prevImage() {
+      stopAutoPlay(); // Stop auto-play on button press
       currentIndex--;
       if (currentIndex < 0) {
         currentIndex = imagePaths.length - 1; // jump to last
       }
       showCurrentImage();
+      startAutoPlay(); // Restart auto-play after the image changes
     }
 
-    // 6) Auto-play every 10 seconds
-    setInterval(() => {
-      nextImage();
-    }, 10000); // 10 seconds
+    // 8) Auto-play every 10 seconds
+    startAutoPlay();
 
-    // 7) Modal Functions
+    // 9) Modal Functions
     function openModal() {
       modal.style.display = 'flex';
       modalImage.src = imagePaths[currentIndex];
